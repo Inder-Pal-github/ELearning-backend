@@ -34,7 +34,6 @@ export const registrationUser = CatchAsyncErrors(
       };
 
       const activationToken = createActivationToken(user);
-      console.log(activationToken);
 
       const activationCode = activationToken.activationCode;
 
@@ -147,7 +146,6 @@ export const loginUser = CatchAsyncErrors(
 
       sendToken(user, 200, res);
     } catch (error: any) {
-      // console.log("controller",error);
       next(new ErrorHandler(error.message, 400));
     }
   }
