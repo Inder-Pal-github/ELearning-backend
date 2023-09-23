@@ -42,7 +42,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Please enter your password"],
+      // required: [true, "Please enter your password"], // To avoid confict in social-auth
       minlength: [8, "Password must be at least 8 characters long."],
       // select: false, //  select option is used to control whether a field should be included in the query results when you perform a document retrieval query (e.g., find, findOne, etc.).
     },
