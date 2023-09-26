@@ -6,6 +6,7 @@ require("dotenv").config();
 import { ErrorHandlerMiddleware } from "./middlewares/error";
 import userRouter from "./routes/user.routes";
 import courseRouter from "./routes/course.route";
+import orderRouter from "./routes/order.routes";
 
 // body-parser
 app.use(express.json({ limit: "50mb" }));
@@ -21,8 +22,9 @@ app.use(
 );
 
 // routes
-app.use("/api/v1", userRouter);
-app.use("/api/v1", courseRouter);
+app.use("/api/v1", userRouter, courseRouter, orderRouter); // shortcut for mulitple routes
+// app.use("/api/v1", courseRouter);
+// app.use("/api/v1", orderRouter);
 
 // testing api
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
