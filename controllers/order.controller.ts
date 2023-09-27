@@ -37,55 +37,56 @@ export const createOrder = CatchAsyncErrors(
       const data: any = {
         courseId: course._id,
         userId: user?._id,
-        payment_info
+        payment_info,
       };
 
-      
       const mailData = {
         order: {
-            _id: course._id,
-            name: course.name,
-            price: course.price,
-            date: new Date().toLocaleDateString("en-US", {
+          _id: course._id,
+          name: course.name,
+          price: course.price,
+          date: new Date().toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
-        }),
-    },
+          }),
+        },
       };
       const html = ejs.renderFile(
         path.join(__dirname, "../mails/order-confirmation.ejs"),
         { order: mailData.order }
       );
-      
+
       try {
-          if (user) {
+        if (user) {
           await sendMail({
-              email: user.email,
-              subject: "Order confirmation.",
-              template: "order-confirmation.ejs",
-              data: mailData,
-            });
+            email: user.email,
+            subject: "Order confirmation.",
+            template: "order-confirmation.ejs",
+            data: mailData,
+          });
         }
-    } catch (error: any) {
+      } catch (error: any) {
         return next(new ErrorHandler(error.message, 400));
-    }
-    
-    user?.courses.push(course?._id);
-    
-    await user?.save();
-    
-    await NotificationModel.create({
+      }
+
+      user?.courses.push(course?._id);
+
+      await user?.save();
+
+      await NotificationModel.create({
         userId: user?._id,
         title: "New Order",
         message: `You have a new order from  ${course?.name}`,
-    });
+      });
 
-    course.purchased = course.purchased ? course.purchased += 1 : course.purchased;
-    await course.save();
-    
-    NewOrder(data, res, next);
+      course.purchased =
+        course.purchased !== undefined
+          ? (course.purchased += 1)
+          : course.purchased;
+      await course.save();
 
+      NewOrder(data, res, next);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
