@@ -9,6 +9,7 @@ import courseRouter from "./routes/course.route";
 import orderRouter from "./routes/order.routes";
 import notificationRouter from "./routes/notification.routes";
 import analyticsRouter from "./routes/analytics.routes";
+import layoutRouter from "./routes/layout.routes";
 
 // body-parser
 app.use(express.json({ limit: "50mb" }));
@@ -30,7 +31,8 @@ app.use(
   courseRouter,
   orderRouter,
   notificationRouter,
-  analyticsRouter
+  analyticsRouter,
+  layoutRouter
 ); // shortcut for mulitple routes
 // app.use("/api/v1", courseRouter);
 // app.use("/api/v1", orderRouter);
