@@ -14,7 +14,7 @@ import {
   sendToken,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById, updateUserRoleServie } from "../services/user.service";
 
 // register user
 interface IRegisterationBody {
@@ -387,3 +387,25 @@ export const updateProfilePicture = CatchAsyncErrors(
     }
   }
 );
+
+
+
+// get all users -- only for admin
+
+export const getAllUsers = CatchAsyncErrors(async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+    getAllUsersService(res);
+  } catch (error:any) {
+    return next(new ErrorHandler(error.message,400));
+  }
+})
+
+// update user role
+export const updateUserRole = CatchAsyncErrors(async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+    const {id,role} = req.body;
+    updateUserRoleServie(res,id,role);
+  } catch (error:any) {
+    return next(new ErrorHandler(error.message,400));
+  }
+})
