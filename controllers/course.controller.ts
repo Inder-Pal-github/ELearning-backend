@@ -91,7 +91,7 @@ export const getSingleCourse = CatchAsyncErrors(
         // await redis.set(courseId, JSON.stringify(course));
         // set expiry time also in redis cache so that we can retrieve  updated data time to time.
         // expiry time in seconds so for 1 day => 1d * 24h * 60m * 60s
-        await redis.setex(courseId, 12 * 60 * 60, JSON.stringify(course));
+        await redis.setex(courseId, 7 * 24 * 60 * 60, JSON.stringify(course)); // 7 days expiration time
 
         console.log("response from db");
 
@@ -120,7 +120,11 @@ export const getAllCourses = CatchAsyncErrors(
         const courses = await CourseModel.find().select(
           "-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links"
         );
-        await redis.setex("allCourses", 24 * 60 * 60, JSON.stringify(courses));
+        await redis.setex(
+          "allCourses",
+          24 * 60 * 60,
+          JSON.stringify(courses)
+        );
         res.status(200).json({
           success: true,
           courses,

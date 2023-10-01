@@ -194,7 +194,7 @@ export const updateAccessToken = CatchAsyncErrors(
       }
       const session = await redis.get(decoded.id as string);
       if (!session) {
-        return next(new ErrorHandler(message, 400));
+        return next(new ErrorHandler("Please login to access this resource.", 400));
       }
 
       const user = JSON.parse(session);
@@ -214,6 +214,12 @@ export const updateAccessToken = CatchAsyncErrors(
 
       res.cookie("access_token", accessToken, accessTokenOptions);
       res.cookie("refresh_token", refreshToken, refreshTokenOptions);
+
+      await redis.setex(
+        req.user?._id,
+        7 * 24 * 60 * 60,  // 7 days
+        JSON.stringify(req.user)
+      );
 
       res.status(200).json({
         success: true,
