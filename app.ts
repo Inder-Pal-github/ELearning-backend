@@ -8,6 +8,7 @@ import userRouter from "./routes/user.routes";
 import courseRouter from "./routes/course.route";
 import orderRouter from "./routes/order.routes";
 import notificationRouter from "./routes/notification.routes";
+import analyticsRouter from "./routes/analytics.routes";
 
 // body-parser
 app.use(express.json({ limit: "50mb" }));
@@ -23,7 +24,14 @@ app.use(
 );
 
 // routes
-app.use("/api/v1", userRouter, courseRouter, orderRouter, notificationRouter); // shortcut for mulitple routes
+app.use(
+  "/api/v1",
+  userRouter,
+  courseRouter,
+  orderRouter,
+  notificationRouter,
+  analyticsRouter
+); // shortcut for mulitple routes
 // app.use("/api/v1", courseRouter);
 // app.use("/api/v1", orderRouter);
 
